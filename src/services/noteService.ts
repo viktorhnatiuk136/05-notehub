@@ -5,7 +5,6 @@ import type { Note, NoteTag } from "../types/note";
 
 export interface NoteHTTPResponse {
   notes: Note[];
-  page: number;
   totalPages: number;
 }
 
