@@ -6,7 +6,7 @@ import css from "./App.module.css";
 
 import type { NoteHTTPResponse } from "../../services/noteService";
 
-import { fetchNotes, createNote, deleteNote } from "../../services/noteService";
+import { fetchNotes, deleteNote } from "../../services/noteService";
 import NoteList from "../NoteList/NoteList";
 import Pagination from "../Pagination/Pagination";
 import Modal from "../Modal/Modal";
@@ -21,6 +21,7 @@ function App() {
   const { data } = useQuery<NoteHTTPResponse>({
     queryKey: ["notes", page, search],
     queryFn: () => fetchNotes({ page, search }),
+    placeholderData: (previousData) => previousData,
   });
 
   const notesList = data?.notes;
@@ -32,21 +33,6 @@ function App() {
   const modalClose = () => {
     setIsModalOpen(false);
   };
-
-  const queryClient = useQueryClient();
-  const createMutation = useMutation({
-    mutationFn: createNote,
-    onSuccess: () => {
-      modalClose();
-      queryClient.invalidateQueries({ queryKey: ["notes"] });
-    },
-  });
-  const deleteMutation = useMutation({
-    mutationFn: deleteNote,
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["notes"] });
-    },
-  });
 
   const debouncedSearch = useDebouncedCallback((value: string) => {
     setSearch(value);
@@ -72,12 +58,10 @@ function App() {
           }
         </header>
 
-        {notesList && notesList.length > 0 && (
-          <NoteList notes={notesList} onDelete={deleteMutation.mutate} />
-        )}
+        {notesList && notesList.length > 0 && <NoteList notes={notesList} />}
         {isModalOpen && (
           <Modal onClose={modalClose}>
-            <NoteForm onClose={modalClose} onCreate={createMutation.mutate} />
+            <NoteForm onClose={modalClose} />
           </Modal>
         )}
       </div>

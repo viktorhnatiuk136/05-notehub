@@ -22,7 +22,7 @@ export async function fetchNotes({
   search,
 }: FetchNotesParams): Promise<NoteHTTPResponse> {
   try {
-    const res = await axios.get("/notes", {
+    const res = await axios.get<NoteHTTPResponse>("/notes", {
       params: { page, search },
       headers: { Authorization: `Bearer ${TOKEN}` },
     });
@@ -41,7 +41,7 @@ interface CreateNoteRequest {
 }
 export async function createNote(data: CreateNoteRequest): Promise<Note> {
   try {
-    const res = await axios.post("/notes", data, {
+    const res = await axios.post<Note>("/notes", data, {
       headers: { Authorization: `Bearer ${TOKEN}` },
     });
     return res.data;
@@ -53,7 +53,7 @@ export async function createNote(data: CreateNoteRequest): Promise<Note> {
 
 export async function deleteNote(id: string): Promise<Note> {
   try {
-    const res = await axios.delete(`/notes/${id}`, {
+    const res = await axios.delete<Note>(`/notes/${id}`, {
       headers: { Authorization: `Bearer ${TOKEN}` },
     });
     return res.data;
