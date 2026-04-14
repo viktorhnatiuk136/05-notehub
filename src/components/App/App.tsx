@@ -18,7 +18,7 @@ function App() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [search, setSearch] = useState("");
 
-  const { data, isLoading, isError, isSuccess } = useQuery<NoteHTTPResponse>({
+  const { data } = useQuery<NoteHTTPResponse>({
     queryKey: ["notes", page, search],
     queryFn: () => fetchNotes({ page, search }),
   });
