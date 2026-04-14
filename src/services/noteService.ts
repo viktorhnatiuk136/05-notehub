@@ -16,7 +16,6 @@ interface FetchNotesParams {
 
 axios.defaults.baseURL = "https://notehub-public.goit.study/api";
 const TOKEN = import.meta.env.VITE_NOTEHUB_TOKEN;
-console.log(TOKEN);
 
 export async function fetchNotes({
   page,
@@ -27,7 +26,6 @@ export async function fetchNotes({
       params: { page, search },
       headers: { Authorization: `Bearer ${TOKEN}` },
     });
-    // console.log(res.data);
 
     return res.data;
   } catch (error) {
